@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR成长技能地图 · 三件套</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:     #1a1a2e;
+    --teal:    #0f7b6c;
+    --teal-lt: #e6f4f1;
+    --gold:    #c9960a;
+    --gold-lt: #fdf6e3;
+    --rust:    #c0392b;
+    --rust-lt: #fdecea;
+    --violet:  #5c3d8f;
+    --vio-lt:  #f0ebfa;
+    --slate:   #4a5568;
+    --mist:    #f7f8fc;
+    --line:    #e2e8f0;
+    --white:   #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans SC', sans-serif;
+    background: #f0f2f7;
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* ── HERO ──────────────────────────────────────────────────────── */
+  .hero {
+    background: var(--ink);
+    position: relative;
+    overflow: hidden;
+    padding: 60px 40px 70px;
+    text-align: center;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 15% 30%, #0f7b6c33, transparent),
+      radial-gradient(ellipse 50% 80% at 85% 70%, #5c3d8f33, transparent),
+      radial-gradient(ellipse 40% 40% at 50% 100%, #c9960a22, transparent);
+  }
+  .hero-tag {
+    display: inline-block;
+    background: var(--teal);
+    color: #fff;
+    font-size: 11px;
+    letter-spacing: 3px;
+    padding: 5px 16px;
+    border-radius: 20px;
+    margin-bottom: 22px;
+    position: relative;
+    animation: fadeDown .6s ease both;
+  }
+  .hero h1 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.3;
+    position: relative;
+    animation: fadeDown .7s .1s ease both;
+  }
+  .hero h1 span { color: var(--gold); }
+  .hero-sub {
+    color: #94a3b8;
+    font-size: 14px;
+    margin-top: 14px;
+    letter-spacing: 1px;
+    position: relative;
+    animation: fadeDown .7s .2s ease both;
+  }
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 40px;
+    position: relative;
+    flex-wrap: wrap;
+    animation: fadeUp .8s .4s ease both;
+  }
+  .stat-chip {
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 12px;
+    padding: 16px 24px;
+    text-align: center;
+    backdrop-filter: blur(6px);
+    min-width: 110px;
+    transition: transform .2s;
+  }
+  .stat-chip:hover { transform: translateY(-4px); }
+  .stat-chip .val {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--gold);
+    display: block;
+  }
+  .stat-chip .lbl { font-size: 11px; color: #94a3b8; margin-top: 4px; }
+
+  /* ── NAV TABS ──────────────────────────────────────────────────── */
+  .nav-bar {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 20px 20px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #f0f2f7;
+    border-bottom: 2px solid var(--line);
+    flex-wrap: wrap;
+  }
+  .nav-btn {
+    padding: 10px 22px;
+    border: none;
+    border-radius: 8px 8px 0 0;
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    background: var(--white);
+    color: var(--slate);
+    border: 1.5px solid var(--line);
+    border-bottom: none;
+    transition: all .2s;
+    margin-bottom: -2px;
+  }
+  .nav-btn.active {
+    background: var(--white);
+    color: var(--teal);
+    border-color: var(--teal);
+    border-bottom: 2px solid var(--white);
+    font-weight: 700;
+  }
+  .nav-btn:not(.active):hover { background: var(--teal-lt); color: var(--teal); }
+
+  /* ── MAIN CONTENT ──────────────────────────────────────────────── */
+  .main { max-width: 860px; margin: 0 auto; padding: 32px 20px 60px; }
+
+  .section { display: none; animation: fadeIn .4s ease; }
+  .section.active { display: block; }
+
+  /* ── SECTION HEADER ────────────────────────────────────────────── */
+  .sec-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .sec-badge {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .sec-header h2 {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .sec-header p { font-size: 13px; color: var(--slate); margin-top: 2px; }
+
+  /* ── EMAIL SECTION ─────────────────────────────────────────────── */
+  .email-card {
+    background: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 20px rgba(0,0,0,.07);
+  }
+  .email-header {
+    background: var(--teal);
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .email-icon { font-size: 24px; }
+  .email-header-text { color: #fff; }
+  .email-header-text strong { font-size: 14px; display: block; }
+  .email-header-text span { font-size: 12px; opacity: .8; }
+  .email-subject {
+    background: var(--teal-lt);
+    padding: 14px 24px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--teal);
+    border-bottom: 1px solid var(--line);
+  }
+  .email-subject strong { font-size: 11px; color: var(--slate); margin-right: 6px; font-weight: 400; }
+  .email-body { padding: 24px; }
+  .email-body p { font-size: 14px; line-height: 2; color: var(--ink); }
+  .email-highlight {
+    background: var(--gold-lt);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    margin: 16px 0;
+  }
+  .email-highlight .hl-row {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 14px; line-height: 1.8; color: var(--ink);
+  }
+  .hl-num {
+    background: var(--gold);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+  .email-meta {
+    background: var(--mist);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-size: 13px;
+    color: var(--slate);
+    line-height: 2;
+  }
+  .email-cta {
+    background: var(--teal);
+    color: #fff;
+    border-radius: 8px;
+    padding: 12px 18px;
+    font-size: 13.5px;
+    font-weight: 500;
+    margin-top: 8px;
+  }
+  .wc-note { font-size: 11px; color: var(--slate); text-align: right; margin-top: 12px; }
+
+  /* ── QUOTES SECTION ────────────────────────────────────────────── */
+  .quote-grid { display: flex; flex-direction: column; gap: 20px; }
+  .quote-card {
+    background: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(0,0,0,.06);
+    display: flex;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .quote-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,.1); }
+  .quote-num-band {
+    width: 64px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-family: 'Noto Serif SC', serif;
+    font-size: 32px;
+    font-weight: 900;
+    color: #fff;
+    gap: 4px;
+  }
+  .quote-num-band small { font-size: 10px; font-family: 'Noto Sans SC', sans-serif; opacity: .75; letter-spacing: 1px; }
+  .quote-content { padding: 20px 22px; flex: 1; }
+  .quote-text {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.7;
+    color: var(--ink);
+    font-family: 'Noto Serif SC', serif;
+    margin-bottom: 10px;
+  }
+  .quote-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .qtag {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-weight: 500;
+  }
+  .quote-source {
+    font-size: 11px;
+    color: var(--slate);
+    margin-top: 8px;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .quote-source::before { content: '—'; }
+
+  /* ── SPEECH SECTION ────────────────────────────────────────────── */
+  .speech-wrapper {
+    background: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 20px rgba(0,0,0,.07);
+  }
+  .speech-top {
+    background: var(--violet);
+    padding: 18px 24px;
+    color: #fff;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .speech-top-text strong { font-size: 14px; display: block; }
+  .speech-top-text span { font-size: 12px; opacity: .75; }
+  .speech-tip {
+    background: var(--vio-lt);
+    padding: 10px 24px;
+    font-size: 12px;
+    color: var(--violet);
+    border-bottom: 1px solid var(--line);
+  }
+  .speech-blocks { padding: 20px 24px; display: flex; flex-direction: column; gap: 16px; }
+  .speech-block {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+  .speech-block-hdr {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 16px;
+    font-size: 12px; font-weight: 700; letter-spacing: 1px;
+    color: #fff;
+  }
+  .speech-block-hdr .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.5); }
+  .speech-block-body {
+    padding: 14px 18px;
+    font-size: 14px;
+    line-height: 2;
+    color: var(--ink);
+  }
+  .speech-block-body .hint {
+    font-size: 11px;
+    color: var(--slate);
+    font-style: italic;
+  }
+  .timing-bar {
+    display: flex;
+    gap: 8px;
+    padding: 14px 24px;
+    background: var(--mist);
+    border-top: 1px solid var(--line);
+    flex-wrap: wrap;
+  }
+  .timing-chip {
+    font-size: 11px;
+    padding: 4px 12px;
+    border-radius: 10px;
+    color: var(--violet);
+    background: var(--vio-lt);
+    border: 1px solid #d8cef5;
+  }
+
+  /* ── KNOWLEDGE MAP ─────────────────────────────────────────────── */
+  .map-intro {
+    text-align: center;
+    margin-bottom: 28px;
+    color: var(--slate);
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  /* Career ladder */
+  .ladder {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .ladder-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+  }
+  .step-bar {
+    width: 62px;
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity .2s, transform .2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .step-bar::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(255,255,255,.2), transparent);
+  }
+  .step-bar .title { font-size: 12px; color: #fff; font-weight: 700; writing-mode: vertical-rl; }
+  .step-label { font-size: 11px; color: var(--slate); text-align: center; }
+  .step-year { font-size: 10px; color: var(--teal); font-weight: 700; }
+  .ladder-arrow { font-size: 18px; color: var(--teal); align-self: center; margin-bottom: 30px; }
+
+  /* Skill modules grid */
+  .modules-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .modules-title::before {
+    content: '';
+    width: 4px; height: 20px;
+    background: var(--teal);
+    border-radius: 2px;
+    display: block;
+  }
+
+  .modules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .module-card {
+    background: var(--white);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,.06);
+    transition: transform .2s;
+  }
+  .module-card:hover { transform: translateY(-3px); }
+  .module-hdr {
+    padding: 12px 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .module-icon { font-size: 18px; }
+  .module-hdr strong { font-size: 14px; color: #fff; }
+  .module-body { padding: 12px 16px; }
+  .module-body ul { padding-left: 0; list-style: none; }
+  .module-body li {
+    font-size: 12.5px;
+    color: var(--slate);
+    line-height: 1.6;
+    padding: 3px 0;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: baseline; gap: 6px;
+  }
+  .module-body li:last-child { border: none; }
+  .module-body li::before { content: '•'; flex-shrink: 0; font-size: 10px; }
+
+  /* Trend cards */
+  .trends-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .trend-card {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 18px 14px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,.06);
+    border-top: 4px solid;
+    transition: transform .2s;
+  }
+  .trend-card:hover { transform: translateY(-3px); }
+  .trend-card .t-icon { font-size: 26px; margin-bottom: 8px; }
+  .trend-card .t-title { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+  .trend-card .t-desc { font-size: 11px; color: var(--slate); line-height: 1.6; }
+
+  /* Future roles */
+  .roles-cloud {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 20px 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.06);
+    margin-bottom: 20px;
+  }
+  .roles-cloud h4 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
+  .roles-flex { display: flex; flex-wrap: wrap; gap: 8px; }
+  .role-tag {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1.5px solid;
+    transition: all .2s;
+    cursor: default;
+  }
+  .role-tag:hover { transform: scale(1.05); }
+
+  /* ── ANIMATIONS ────────────────────────────────────────────────── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── FOOTER ────────────────────────────────────────────────────── */
+  .footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 11px;
+    color: var(--slate);
+    border-top: 1px solid var(--line);
+    margin-top: 40px;
+    background: var(--white);
+  }
+
+  /* copy button */
+  .copy-btn {
+    display: inline-block;
+    margin-top: 14px;
+    padding: 8px 20px;
+    border-radius: 8px;
+    background: var(--teal);
+    color: #fff;
+    font-size: 12px;
+    cursor: pointer;
+    border: none;
+    font-family: 'Noto Sans SC', sans-serif;
+    transition: background .2s;
+  }
+  .copy-btn:hover { background: #0a6357; }
+</style>
+</head>
+<body>
+
+<!-- ── HERO ──────────────────────────────────────────────────────────────── -->
+<div class="hero">
+  <div class="hero-tag">HR 内容传播套装</div>
+  <h1>人力资源 <span>成长技能地图</span><br>三件套</h1>
+  <p class="hero-sub">讲师：黄金华 &nbsp;|&nbsp; 2024年04月10日 &nbsp;|&nbsp; 邮件预告 · 社群金句 · 演讲开场白 · 知识地图</p>
+  <div class="hero-stats">
+    <div class="stat-chip"><span class="val">95%</span><div class="lbl">执行类工作占比</div></div>
+    <div class="stat-chip"><span class="val">75%</span><div class="lbl">从业者中女性占比</div></div>
+    <div class="stat-chip"><span class="val">90%</span><div class="lbl">HR集中于民营企业</div></div>
+    <div class="stat-chip"><span class="val">5级</span><div class="lbl">职业成长阶梯</div></div>
+    <div class="stat-chip"><span class="val">10+</span><div class="lbl">未来HR角色</div></div>
+  </div>
+</div>
+
+<!-- ── NAV ────────────────────────────────────────────────────────────────── -->
+<div class="nav-bar">
+  <button class="nav-btn active" onclick="switchTab('email', this)">✉ 邮件预告</button>
+  <button class="nav-btn" onclick="switchTab('quotes', this)">💬 社群金句</button>
+  <button class="nav-btn" onclick="switchTab('speech', this)">🎤 演讲开场白</button>
+  <button class="nav-btn" onclick="switchTab('map', this)">🗺 知识地图</button>
+</div>
+
+<div class="main">
+
+  <!-- ═══════ EMAIL ══════════════════════════════════════════════════════════ -->
+  <div id="email" class="section active">
+    <div class="sec-header">
+      <div class="sec-badge" style="background:#e6f4f1;">✉️</div>
+      <div>
+        <h2>邮件预告</h2>
+        <p>约 190 字 · 含 2 个核心数字 · 1 句行动号召 · 适合发给参会者/学员</p>
+      </div>
+    </div>
+
+    <div class="email-card">
+      <div class="email-header">
+        <div class="email-icon">📨</div>
+        <div class="email-header-text">
+          <strong>邀请邮件 / 课程通知</strong>
+          <span>收件人：全体 HR 从业者及管理层</span>
+        </div>
+      </div>
+      <div class="email-subject">
+        <strong>主题：</strong>95% 的 HR 都在执行，谁在进化？——《HR成长技能地图》开课邀请
+      </div>
+      <div class="email-body">
+        <p>各位同仁，</p>
+        <br>
+        <p>一个令人深思的数据：<strong>高达 95% 的 HR 日常工作以执行类为主，真正的管理类工作仅占 5%</strong>。这不是个案，这是行业现状。</p>
+        <div class="email-highlight">
+          <div class="hl-row">
+            <span class="hl-num">亮点①</span>
+            <span>入门者、专员、主管、经理、总监——五大成长阶段的核心技能首次系统梳理，每一级"升级密码"一次看懂</span>
+          </div>
+          <div class="hl-row" style="margin-top:10px">
+            <span class="hl-num">亮点②</span>
+            <span>HR 未来十大角色全景呈现：从"组织设计者"到"数据结构师"，看清下一个 5 年的职业方向</span>
+          </div>
+        </div>
+        <div class="email-meta">
+          📅 &nbsp;课程时间：2024 年 4 月 10 日（周三）19:00 – 21:00<br>
+          📍 &nbsp;授课讲师：黄金华老师（HR 实战专家）<br>
+          🎯 &nbsp;适合人群：所有阶段的 HR 从业者及有意转型的管理者
+        </div>
+        <div class="email-cta">
+          👉 点击报名链接完成预约，名额有限，先报先得——让这张技能地图成为你 2024 年最值钱的装备！
+        </div>
+        <div class="wc-note">字数约 190 字 | 含 2 个核心数字 | 1 句行动号召</div>
+      </div>
+    </div>
+
+    <button class="copy-btn" onclick="copyText('email-body-text')">📋 复制正文</button>
+  </div>
+
+  <!-- ═══════ QUOTES ══════════════════════════════════════════════════════════ -->
+  <div id="quotes" class="section">
+    <div class="sec-header">
+      <div class="sec-badge" style="background:#f0ebfa;">💬</div>
+      <div>
+        <h2>社群金句（3 条）</h2>
+        <p>每条 ≤ 30 字 · 带话题标签 · 适合 HR 微信群 / 朋友圈</p>
+      </div>
+    </div>
+
+    <div class="quote-grid">
+
+      <div class="quote-card">
+        <div class="quote-num-band" style="background:var(--teal);">
+          <span>01</span><small>金句</small>
+        </div>
+        <div class="quote-content">
+          <div class="quote-text">
+            95%的HR困在执行里，真正的进化从看见那5%开始。
+          </div>
+          <div class="quote-tags">
+            <span class="qtag" style="background:var(--teal-lt);color:var(--teal);border:1px solid #b2ddd8;">#HR成长</span>
+            <span class="qtag" style="background:var(--teal-lt);color:var(--teal);border:1px solid #b2ddd8;">#职业进化</span>
+            <span class="qtag" style="background:var(--teal-lt);color:var(--teal);border:1px solid #b2ddd8;">#成长技能地图</span>
+          </div>
+          <div class="quote-source">来自「HR整体概览」核心数据</div>
+        </div>
+      </div>
+
+      <div class="quote-card">
+        <div class="quote-num-band" style="background:var(--violet);">
+          <span>02</span><small>金句</small>
+        </div>
+        <div class="quote-content">
+          <div class="quote-text">
+            从入门者到总监，每一级都有它专属的"升级密码"。
+          </div>
+          <div class="quote-tags">
+            <span class="qtag" style="background:var(--vio-lt);color:var(--violet);border:1px solid #c9bfed;">#职业发展</span>
+            <span class="qtag" style="background:var(--vio-lt);color:var(--violet);border:1px solid #c9bfed;">#HR路径</span>
+            <span class="qtag" style="background:var(--vio-lt);color:var(--violet);border:1px solid #c9bfed;">#晋升</span>
+          </div>
+          <div class="quote-source">来自「五级职业发展路径」模块</div>
+        </div>
+      </div>
+
+      <div class="quote-card">
+        <div class="quote-num-band" style="background:var(--rust);">
+          <span>03</span><small>金句</small>
+        </div>
+        <div class="quote-content">
+          <div class="quote-text">
+            HR的未来不是事务员，是组织设计者和数据结构师。
+          </div>
+          <div class="quote-tags">
+            <span class="qtag" style="background:var(--rust-lt);color:var(--rust);border:1px solid #f3c0ba;">#HR未来</span>
+            <span class="qtag" style="background:var(--rust-lt);color:var(--rust);border:1px solid #f3c0ba;">#组织发展</span>
+            <span class="qtag" style="background:var(--rust-lt);color:var(--rust);border:1px solid #f3c0ba;">#数字化HR</span>
+          </div>
+          <div class="quote-source">来自「HR未来5大趋势·十大角色」</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════ SPEECH ══════════════════════════════════════════════════════════ -->
+  <div id="speech" class="section">
+    <div class="sec-header">
+      <div class="sec-badge" style="background:#f0ebfa;">🎤</div>
+      <div>
+        <h2>演讲开场白</h2>
+        <p>1 分钟口语稿 · 含反问 + 数据对比 · 适合课程汇报开场</p>
+      </div>
+    </div>
+
+    <div class="speech-wrapper">
+      <div class="speech-top">
+        <span style="font-size:26px">🎙</span>
+        <div class="speech-top-text">
+          <strong>《HR成长技能地图》开场白 · 口语版</strong>
+          <span>建议语速：中等偏慢 · 全段约 60 秒 · 括号内为节奏提示</span>
+        </div>
+      </div>
+      <div class="speech-tip">
+        ⏱ 节奏建议：反问后停顿 2 秒 &nbsp;|&nbsp; 数据处放慢语速 &nbsp;|&nbsp; 转折时降调 &nbsp;|&nbsp; 结尾上扬
+      </div>
+      <div class="speech-blocks">
+
+        <div class="speech-block">
+          <div class="speech-block-hdr" style="background:var(--rust);">
+            <div class="dot"></div>反问开场
+          </div>
+          <div class="speech-block-body">
+            我想先问大家一个问题——<br>
+            你觉得，HR 这个岗位，最核心的价值是什么？<br>
+            <span class="hint">（停顿 2 秒，环视全场）</span>
+          </div>
+        </div>
+
+        <div class="speech-block">
+          <div class="speech-block-hdr" style="background:var(--gold);">
+            <div class="dot"></div>数据冲击
+          </div>
+          <div class="speech-block-body">
+            有一组数据，第一次看到时我自己都愣了：<br>
+            <strong>95%</strong> 的 HR，每天做的都是执行类工作。<br>
+            招聘、考勤、社保、离职手续……<br>
+            真正的管理类工作，<strong>只占 5%</strong>。<br>
+            <span class="hint">（放慢）而且，75% 的从业者是女性，90% 集中在民营企业。</span>
+          </div>
+        </div>
+
+        <div class="speech-block">
+          <div class="speech-block-hdr" style="background:var(--violet);">
+            <div class="dot"></div>对比转折
+          </div>
+          <div class="speech-block-body">
+            这不是在说行业的问题，这是现实。<br>
+            <span class="hint">（停顿）</span><br>
+            但也正是因为这个现实，<br>
+            那 5% 做到管理层的人，才显得那么珍贵。<br>
+            今天，我们就来拆解这张<strong>「HR成长技能地图」</strong>——<br>
+            从入门者到总监，每一级需要什么、怎么升。
+          </div>
+        </div>
+
+        <div class="speech-block">
+          <div class="speech-block-hdr" style="background:var(--teal);">
+            <div class="dot"></div>行动号召
+          </div>
+          <div class="speech-block-body">
+            接下来，我希望你不只是在听，<br>
+            而是一边听，一边对照自己现在在哪一级、<br>
+            还缺什么，该怎么补。<br>
+            <span class="hint">（上扬）</span>准备好了吗？我们开始。
+          </div>
+        </div>
+
+      </div>
+      <div class="timing-bar">
+        <span class="timing-chip">反问停顿 2 秒</span>
+        <span class="timing-chip">数据处放慢</span>
+        <span class="timing-chip">转折降调停顿</span>
+        <span class="timing-chip">结尾语调上扬</span>
+        <span class="timing-chip">全段约 60 秒</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ MAP ════════════════════════════════════════════════════════════ -->
+  <div id="map" class="section">
+    <div class="sec-header">
+      <div class="sec-badge" style="background:#e6f4f1;">🗺️</div>
+      <div>
+        <h2>HR 成长技能知识地图</h2>
+        <p>基于 PPT 核心内容提炼 · 入门→总监全路径 · 五大趋势 · 十大角色</p>
+      </div>
+    </div>
+
+    <p class="map-intro">
+      人力资源成长是一条从"执行者"到"战略伙伴"的蜕变之路。<br>
+      每个阶段有专属能力要求，每一步都需要刻意积累。
+    </p>
+
+    <!-- Career Ladder -->
+    <div class="modules-title">职业成长阶梯</div>
+    <div class="ladder">
+      <div class="ladder-step">
+        <div class="step-bar" style="background:#64b5a0;height:60px;">
+          <span class="title">入门者</span>
+        </div>
+        <div class="step-label">基础认知<br>工具掌握</div>
+        <div class="step-year">起步期</div>
+      </div>
+      <div class="ladder-arrow">→</div>
+      <div class="ladder-step">
+        <div class="step-bar" style="background:#3d9e8a;height:85px;">
+          <span class="title">HR专员</span>
+        </div>
+        <div class="step-label">模块精通<br>流程执行</div>
+        <div class="step-year">1~3年</div>
+      </div>
+      <div class="ladder-arrow">→</div>
+      <div class="ladder-step">
+        <div class="step-bar" style="background:#1d7d6b;height:115px;">
+          <span class="title">HR主管</span>
+        </div>
+        <div class="step-label">团队协作<br>制度建设</div>
+        <div class="step-year">3~5年</div>
+      </div>
+      <div class="ladder-arrow">→</div>
+      <div class="ladder-step">
+        <div class="step-bar" style="background:#0f5c50;height:148px;">
+          <span class="title">HR经理</span>
+        </div>
+        <div class="step-label">体系搭建<br>业务协同</div>
+        <div class="step-year">5~10年</div>
+      </div>
+      <div class="ladder-arrow">→</div>
+      <div class="ladder-step">
+        <div class="step-bar" style="background:#1a2b4a;height:185px;">
+          <span class="title" style="color:#f5c842">HR总监</span>
+        </div>
+        <div class="step-label">战略引领<br>组织发展</div>
+        <div class="step-year">10年+</div>
+      </div>
+    </div>
+
+    <!-- Core Modules -->
+    <div class="modules-title">六大专业模块</div>
+    <div class="modules-grid">
+      <div class="module-card">
+        <div class="module-hdr" style="background:var(--teal);">
+          <span class="module-icon">🎯</span>
+          <strong>招聘与配置</strong>
+        </div>
+        <div class="module-body">
+          <ul>
+            <li>招聘计划→邀约→面试→Offer</li>
+            <li>工作分析 · 岗位评估</li>
+            <li>定岗定编 · 人才储备</li>
+            <li>背调体检 · 入职培训</li>
+          </ul>
+        </div>
+      </div>
+      <div class="module-card">
+        <div class="module-hdr" style="background:var(--gold);">
+          <span class="module-icon">💰</span>
+          <strong>薪酬与激励</strong>
+        </div>
+        <div class="module-body">
+          <ul>
+            <li>岗位评估→定岗定薪</li>
+            <li>薪资计算=月工资÷21.75×天数</li>
+            <li>长期激励 · 保障激励</li>
+            <li>薪酬制度设计</li>
+          </ul>
+        </div>
+      </div>
+      <div class="module-card">
+        <div class="module-hdr" style="background:var(--violet);">
+          <span class="module-icon">📊</span>
+          <strong>绩效管理</strong>
+        </div>
+        <div class="module-body">
+          <ul>
+            <li>考核制度设计</li>
+            <li>绩效评估 · 360度反馈</li>
+            <li>干部管理流程</li>
+            <li>目标分解与追踪</li>
+          </ul>
+        </div>
+      </div>
+      <div class="module-card">
+        <div class="module-hdr" style="background:#e67e22;">
+          <span class="module-icon">📚</span>
+          <strong>培训与发展</strong>
+        </div>
+        <div class="module-body">
+          <ul>
+            <li>职业发展规划</li>
+            <li>系统思考 · 行动学习</li>
+            <li>内部培训师体系</li>
+            <li>人才培养机制</li>
+          </ul>
+        </div>
+      </div>
+      <div class="module-card">
+        <div class="module-hdr" style="background:var(--rust);">
+          <span class="module-icon">🤝</span>
+          <strong>员工关系</strong>
+        </div>
+        <div class="module-body">
+          <ul>
+            <li>劳动合同 · 考勤休假</li>
+            <li>劳动争议预防处理</li>
+            <li>员工活动 · 奖惩制度</li>
+            <li>离职管理制度</li>
+          </ul>
+        </div>
+      </div>
+      <div class="module-card">
+        <div class="module-hdr" style="background:#2980b9;">
+          <span class="module-icon">🏗</span>
+          <strong>组织发展</strong>
+        </div>
+        <div class="module-body">
+          <ul>
+            <li>组织结构设置</li>
+            <li>定岗定编 · 管理宽度</li>
+            <li>文化建设 · 核心价值观</li>
+            <li>高绩效团队打造</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Future Trends -->
+    <div class="modules-title">HR 未来 5 大趋势</div>
+    <div class="trends-grid">
+      <div class="trend-card" style="border-color:var(--teal);">
+        <div class="t-icon">⚡</div>
+        <div class="t-title">快速变革</div>
+        <div class="t-desc">组织架构与业务模式持续迭代，HR 需具备敏捷响应能力</div>
+      </div>
+      <div class="trend-card" style="border-color:var(--violet);">
+        <div class="t-icon">🏛</div>
+        <div class="t-title">中台模式</div>
+        <div class="t-desc">HR 中台整合能力，支撑业务前台高效运转</div>
+      </div>
+      <div class="trend-card" style="border-color:var(--gold);">
+        <div class="t-icon">🔄</div>
+        <div class="t-title">弹性制度</div>
+        <div class="t-desc">制度设计从刚性走向弹性，适配多元用工场景</div>
+      </div>
+      <div class="trend-card" style="border-color:#2980b9;">
+        <div class="t-icon">🌐</div>
+        <div class="t-title">人才平台</div>
+        <div class="t-desc">内外部人才平台化运营，打破传统雇佣边界</div>
+      </div>
+      <div class="trend-card" style="border-color:var(--rust);">
+        <div class="t-icon">📈</div>
+        <div class="t-title">数据化管理</div>
+        <div class="t-desc">HR 决策从经验驱动转向数据驱动，量化组织能力</div>
+      </div>
+    </div>
+
+    <!-- Future Roles -->
+    <div class="roles-cloud">
+      <h4>🚀 HR 未来十大角色</h4>
+      <div class="roles-flex">
+        <span class="role-tag" style="color:var(--teal);border-color:var(--teal);background:var(--teal-lt);">组织设计者</span>
+        <span class="role-tag" style="color:var(--violet);border-color:var(--violet);background:var(--vio-lt);">人才发展家</span>
+        <span class="role-tag" style="color:#2980b9;border-color:#2980b9;background:#ebf4fb;">数据结构师</span>
+        <span class="role-tag" style="color:#e67e22;border-color:#e67e22;background:#fef5e7;">流程设计师</span>
+        <span class="role-tag" style="color:var(--rust);border-color:var(--rust);background:var(--rust-lt);">多元文化倡导者</span>
+        <span class="role-tag" style="color:var(--gold);border-color:var(--gold);background:var(--gold-lt);">激励大专家</span>
+        <span class="role-tag" style="color:#27ae60;border-color:#27ae60;background:#eafaf1;">敬业督导员</span>
+        <span class="role-tag" style="color:#8e44ad;border-color:#8e44ad;background:#f5eefa;">项目负责人</span>
+        <span class="role-tag" style="color:#16a085;border-color:#16a085;background:#e8f8f5;">战略前瞻员</span>
+        <span class="role-tag" style="color:#c0392b;border-color:#c0392b;background:#fdedec;">劳动风险预防家</span>
+      </div>
+    </div>
+
+    <!-- Management Theory Timeline -->
+    <div class="modules-title">管理理论发展脉络</div>
+    <div style="background:var(--white);border-radius:16px;padding:20px 24px;box-shadow:0 2px 12px rgba(0,0,0,.06);">
+      <div style="display:flex;gap:0;overflow-x:auto;padding-bottom:8px;">
+        <div style="flex:1;min-width:140px;padding:14px;border-right:2px dashed var(--line);text-align:center;">
+          <div style="font-size:11px;color:var(--slate);margin-bottom:6px;">阶段 1</div>
+          <div style="font-size:13px;font-weight:700;color:var(--teal);margin-bottom:8px;">经验管理时期</div>
+          <div style="font-size:11px;color:var(--slate);line-height:1.7;">罗伯特·欧文<br>绩效评价体系<br>现代人事管理之父</div>
+        </div>
+        <div style="flex:1;min-width:140px;padding:14px;border-right:2px dashed var(--line);text-align:center;">
+          <div style="font-size:11px;color:var(--slate);margin-bottom:6px;">阶段 2</div>
+          <div style="font-size:13px;font-weight:700;color:var(--violet);margin-bottom:8px;">科学管理时期</div>
+          <div style="font-size:11px;color:var(--slate);line-height:1.7;">泰勒<br>动作与时间研究<br>激励性工资制度</div>
+        </div>
+        <div style="flex:1;min-width:140px;padding:14px;border-right:2px dashed var(--line);text-align:center;">
+          <div style="font-size:11px;color:var(--slate);margin-bottom:6px;">阶段 3</div>
+          <div style="font-size:13px;font-weight:700;color:var(--gold);margin-bottom:8px;">现代管理时期</div>
+          <div style="font-size:11px;color:var(--slate);line-height:1.7;">霍桑实验<br>马斯洛需求层次<br>X/Y理论</div>
+        </div>
+        <div style="flex:1;min-width:140px;padding:14px;text-align:center;">
+          <div style="font-size:11px;color:var(--slate);margin-bottom:6px;">阶段 4</div>
+          <div style="font-size:13px;font-weight:700;color:var(--rust);margin-bottom:8px;">后现代管理时期</div>
+          <div style="font-size:11px;color:var(--slate);line-height:1.7;">耗散结构论<br>协同论 · 突变论<br>系统管理</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /map -->
+
+</div><!-- /main -->
+
+<div class="footer">
+  HR 成长技能地图 · 三件套 &nbsp;|&nbsp; 讲师：黄金华 &nbsp;|&nbsp; 2024.04.10 &nbsp;|&nbsp; 仅供内部学习传播
+</div>
+
+<script>
+function switchTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function copyText(id) {
+  const el = document.querySelector('.email-body');
+  const text = el ? el.innerText : '';
+  navigator.clipboard.writeText(text).then(() => {
+    alert('正文已复制！');
+  });
+}
+</script>
+
+</body>
+</html>
